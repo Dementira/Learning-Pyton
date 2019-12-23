@@ -2,10 +2,12 @@
 Repository with some of python
 
 #Quiero hacer un programa que le sirva a una persona para ver cuanta plata gasto en su negocio de hamburguesas
+#I want to make a program that helps a person to see how much money they spend on their hamburger business
 
 #Entrada de datos
+#Data input
 
-print('Por favor, ingrese lo solicitado a continuación...')
+print('Por favor, ingrese lo solicitado a continuación...')  #Pls, enter the requested below ...
 
 precioCarne = int(input('Ingrese el precio de la carne picada '))
 gramosCarne = int(input('Ingrese la cantidad de gramos que compró '))
