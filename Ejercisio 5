@@ -1,0 +1,11 @@
+#Ejercicio 5
+#Escribir un programa que convierta un valor dado en grados Fahrenheit a grados Celsius. Recordar que la fórmula para la conversión es:
+#
+#C = (F-32)*5/9
+
+def conversion(x):
+    return ((x-32)*5/9)
+
+fahrenheit = float(input('Inserte los grados Fahrenheit: '))
+
+print(fahrenheit, ' Fahrenheit son ', conversion(fahrenheit), ' grados Celcius')
