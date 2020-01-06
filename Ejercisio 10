@@ -1,0 +1,51 @@
+#Ejercicio 10
+#Un alumno desea saber cual será su calificación final en la materia de Algoritmos. Dicha calificación se compone de los siguientes 
+#prcentajes:
+#55% del promedio de sus tres calificaciones parciales.
+#30% de la calificación del examen final.
+#15% de la calificación de un trabajo final.
+
+def total_parciales(x,y,z):
+    return x+y+z
+
+def porcentaje_total_parciales(x):
+    '''
+        Calculo del 55% del promedio de sus tres parciales.
+    '''
+    return (x*55)/100
+
+def porcentaje_examen_final(x):
+    '''
+        Calculo del 30% del examen final.
+    '''
+    return (x*30)/100
+    
+def porcentaje_trabajo_final(x):
+    '''
+        Calculo del 15% del trabajo final.
+    '''
+    return (x*15)/100
+
+def total_nota(x,y,z):
+    '''
+        Calculo de la suma del total de los porcentajes.
+    '''
+    return x+y+z    
+
+nombre = input('Hola, bienvenide! Ingrese su nombre: ')
+materia = input('¿Cuál es la materia? ')
+print('Hola,', nombre, 'para conocer tu calificacion total de la materia', materia, ', ingresa las siguientes calificaciones... /n ¡Ateción! El examen final NO es el trabajo final.')
+
+parcial1 = float(input('Parcial 1: '))
+parcial2 = float(input('Parcial 2: '))
+parcial3 = float(input('Parcial 3: '))
+examen_final = float(input('Examen final (FINAL): '))
+trabajo_final = float(input('Trabajo final: '))
+
+porcentaje_nota_tres_parciales = porcentaje_total_parciales(total_parciales(parcial1, parcial2, parcial3))
+porcentaje_nota_examen_final = porcentaje_examen_final(examen_final)
+porcentaje_nota_trabajo_final = porcentaje_trabajo_final(trabajo_final)
+
+calificacion_total = total_nota(porcentaje_nota_tres_parciales, porcentaje_nota_examen_final, porcentaje_nota_trabajo_final)
+
+print(nombre, ', tu calificación en la materia', materia, 'es: ', calificacion_total)
