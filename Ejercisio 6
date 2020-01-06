@@ -1,0 +1,11 @@
+#Ejercicio 6
+#Calcular la media de tres números pedidos por teclado.
+
+def media(x,y,z):
+    return (x+y+z)/3
+
+num1 = int(input('Ingrese el primer numero: '))
+num2 = int(input('Ingrese el segundo numero: '))
+num3 = int(input('Ingrese el tercer numero: '))
+
+print('La media de los numeros: ', num1,',', num2,'y', num3, ', es: ', media(num1, num2, num3))
