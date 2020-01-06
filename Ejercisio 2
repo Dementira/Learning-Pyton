@@ -1,0 +1,14 @@
+#Ejercicio 2
+#Calcular el perímetro y área de un rectángulo dada su base y su altura.
+
+def perimetro(base, altura):
+    return base+base+altura+altura
+
+def area(base, altura):
+    return base*altura
+
+base = int(input('Ingrese base del rectángulo: '))
+altura = int(input('Ingrese altura del rectángulo: '))
+
+print('El perímetro del rectángulo es: ', perimetro (base, altura))
+print('El area del rectángulo es: ', area(base, altura))
