@@ -1,0 +1,18 @@
+#Ejercicio 12
+#Pide al usuario dos pares de números x1,y2 y x2,y2, que representen dos puntos en el plano. Calcula y muestra la distancia entre ellos.
+
+import math
+
+def distancia(x1,y1,x2,y2):
+    '''
+        math.sqrt me permite calcular la raiz cuadrada
+    '''
+    distancia = math.sqrt((x2-x1)**2 + (y2-y1)**2)
+    return distancia
+
+x1 = int(input('Ingrese x1: '))
+y1 = int(input('Ingrese y1: '))
+x2 = int(input('Ingrese x2: '))
+y2 = int(input('Ingrese y2: '))
+
+print(distancia(x1,y1,x2,y2))
