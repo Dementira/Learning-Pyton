@@ -1,0 +1,15 @@
+#Ejercicio 16
+#Dos vehículos viajan a diferentes velocidades (v1 y v2) y están distanciados por una distancia d. El que está detrás viaja a una 
+#velocidad mayor. Se pide hacer un algoritmo para ingresar la distancia entre los dos vehículos (km) y sus respectivas velocidades (km/h) 
+#y con esto determinar y mostrar en que tiempo (minutos) alcanzará el vehículo más rápido al otro.
+
+def calcular_tiempo(v1,v2,d,t):
+    t = d/(v2-v1)
+    t = t*60
+    return t
+
+distancia = int(input('Ingresar distancia (en km/h): '))
+velocidad_1 = int(input('Ingresar velocidad del auto que está más adelantado (en km/h): '))
+velocidad_2 = int(input('Ingresar velocidad del auto que viaja por detrás, pero lleva más velocidad (en km/h): '))
+tiempo = 1
+print('El tiempo que demorará serán: ', calcular_tiempo(velocidad_1, velocidad_2, distancia, tiempo), 'minutos.')
