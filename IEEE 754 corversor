@@ -158,8 +158,10 @@ def caracteristicas(lista_x):
 #----------------------------------INICIO DEL PROGRAMA------------------------------------------
 
 
+#La cadena se compone de 1 bit de signo. 0 significa que es positivo, y 1 significa que es negativo.
+#Ademas posee 8 bits de exponente y de 23 bits de mantisa. En la siguiente linea se detallan sectores.
 
-#........S.EEEEEEEEEEEEEEE.MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+#--------S|---EXPONENTE---|------------------MANTISA--------------------|
 lista = [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 """Desde aquí se modifica la cadena de bits que queremos ingresar."""
 
