@@ -1,0 +1,179 @@
+import time
+#------------------------------------FUNCIONES--------------------------------------
+#----------------------------INGRESO DE LA CADENA--------------------------------
+def ingreso_cadena(listax):
+
+    """ingreso de la cadena de 32 bits a ser analizada"""
+    
+    while True:
+        try:
+            for __i in range(1, 33):
+                dig = int(input('dig: '))
+                if dig == 0 or dig == 1:
+                    listax.append(dig)
+                else:
+                    print('Vuelve a ingresar este digito. Recuerda que un número binario se puede componer solo de 1 y 0 (unos y ceros).')
+                    
+        except:
+            print('Recuerda que un número binario se puede componer solo de 1 y 0 (unos y ceros), no de letras ni caracteres. Vuelve a intentarlo desde cero.')
+            lista_x = []
+            ingreso_cadena(lista_x)
+        else:
+            print('Bien, has ingresado el número completo. ')
+            break
+    return listax
+
+def tiempo_de_espera(x):
+    for i in range(x):
+        print(i,'...')
+        time.sleep(1)
+#------------------------------------SIGNO--------------------------------------
+def signo(sign):
+    
+    """Determina el signo del número"""
+    
+    if ( sign == 0):
+        sign = '+'
+    else:
+        sign = '-'
+    return sign
+
+#----------------------------------EXPONENTE Y MANTISA-------------------------------------
+def es_cero(x):
+    
+    """define si el exponente es 0"""
+
+    cont = 0
+    for i in x:
+        if (i == 0):
+            cont +=1
+    if (cont == len(x)):
+        ok = True
+    else:
+        ok = False
+    return ok
+
+def es_255(exp):
+
+    """define si el exponente es 255"""
+    
+    cont = 0
+    for i in exp:
+        if (i == 1):
+            cont +=1
+    if (cont == 8):
+        ok = True
+    else:
+        ok = False
+    return ok
+
+def calculo_exponente(exp):
+
+    """define el numero que reprensenta el exponente"""
+
+    if (es_cero(exp)):
+        exp = -126
+    elif (es_255(exp)):
+        exp = 'NaN'
+    else:
+        exponente = 0
+        j = 7
+        for i in exp:
+            if (i == 1):
+                exponente = exponente + (1*(2**j))
+            j = j-1
+        exp = exponente - 127
+    return exp
+
+def resolucion_del_numero_desnorm(mantisa, exp):
+
+    """resolucion del numero que representa la mantiza elevada al exponente, Desnormalizada"""
+
+    j = -1
+    resultado = 0
+    for i in mantisa:
+        if (i == 1) and (j > -24):
+            resultado = resultado + (1*(2**(j+exp)))
+        j -=1
+    return resultado
+
+def resolucion_del_numero_norm(mantisa, exp):
+
+    """resolucion del numero que representa la mantiza elevada al exponente, Normalizada"""
+    
+    mantisa.insert(0, 1)
+    print('La mantisa, normalisada es: ', mantisa, 'y tiene una longitud de ', len(mantisa), 'bits. ')
+    j = 0
+    resultado = 0
+    for i in mantisa:
+        if (i == 1) and (j > -24):
+            resultado = resultado + (1*(2**(j+exp)))
+        j -=1
+    return resultado
+
+def resolucion(lista_x):
+
+    """resolucion del problema completo"""
+    
+    #Exponente
+    exp = lista_x[1:9]
+    exponente = calculo_exponente(exp)
+
+    #Mantisa
+    mantisa = lista_x[9:32]
+    if (exponente == -126):
+        if es_cero(mantisa):
+            resultado = 0
+            return resultado
+        else:
+            resultado = resolucion_del_numero_desnorm(mantisa, exponente)
+            return resultado
+    elif (exponente == 'NaN'):
+        if es_cero(mantisa):
+            resultado = ' infinito '
+            return resultado
+        else:
+            resultado = 'Not a Number.'
+            return resultado
+    else:
+        resultado = resolucion_del_numero_norm(mantisa, exponente)
+        return resultado
+
+def muestra_del_resultado(lista_x):
+    if solucion != 'Not a Number.':
+        print('El numero representado en IEEE_754 es: ', signo(lista_x[0]), solucion)
+    else:
+        print('El resultado de la cadena de bits no es un numero // Not a number //.')
+
+#-----------------------------------EXTRAS-----------------------------------------------------
+def caracteristicas(lista_x):
+    if signo(lista_x[0]) == '+':
+            print('Es de signo positivo.')
+    else:
+        print('Es de signo negativo.')
+    print('El exponente está conformado por la siguiente cadena: ', lista_x[1:9],' y su longitud es de: ', len(lista_x[1:9]),'bits.')
+    print('La mantisa está conformado por la siguiente cadena: ', lista_x[9:32], ' y su longitud es de: ', len(lista_x[9:32]),'bits.')
+
+
+#----------------------------------INICIO DEL PROGRAMA------------------------------------------
+
+
+
+#........S.EEEEEEEEEEEEEEE.MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+lista = [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+"""Desde aquí se modifica la cadena de bits que queremos ingresar."""
+
+#lista = ingreso_cadena(lista)
+#Esta funcion sirve para cargar la cadena numero por numero, pero me parece incomodapygame.examples.aliens.main()
+
+if len(lista) == 32:
+    print('Estas son las características del numero ingresado: ')
+    tiempo_de_espera(2)
+    caracteristicas(lista)
+    print('Espere mientras se realiza la transformacion de IEEE 754 a decimal.')
+    tiempo_de_espera(3)
+    solucion = resolucion(lista)
+    if solucion != 'Not a Number.':
+        print('El numero representado en IEEE_754 es: ', signo(lista[0]), solucion)
+    else:
+        print('El resultado de la cadena de bits no es un numero // Not a number //.')
