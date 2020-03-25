@@ -1,0 +1,210 @@
+from tkinter import *
+
+#---------------------------------------------------------------------------------------
+#------------------------SECTOR DE FUNCIONES-------------------------------------------
+#-----------------------------------------------------------------------------------------------
+
+#--------------------------LIMITADOR DE LA PANTALLA---------------------------------------------
+#def limitador(texto):
+#    if len(texto) > 33:
+#        #donde esta el :5 limitas la cantidad d caracteres
+#        texto.set(texto[1:33])
+
+
+#--------------------------SIGNO-----------------------------------------------------------------
+def signo(sign):
+    
+    """Determina el signo del número"""
+    
+    if ( sign == 0):
+        sign = '+'
+    else:
+        sign = '-'
+    return sign
+
+#----------------------------------EXPONENTE Y MANTISA----------------------------------------------
+def es_cero(x):
+    
+    """define si el exponente es 0"""
+
+    cont = 0
+    for i in x:
+        if (i == 0):
+            cont +=1
+    if (cont == len(x)):
+        ok = True
+    else:
+        ok = False
+    return ok
+
+def es_255(exp):
+
+    """define si el exponente es 255"""
+    
+    cont = 0
+    for i in exp:
+        if (i == 1):
+            cont +=1
+    if (cont == 8):
+        ok = True
+    else:
+        ok = False
+    return ok
+
+def calculo_exponente(exp):
+
+    """define el numero que reprensenta el exponente"""
+
+    if (es_cero(exp)):
+        exp = -126
+    elif (es_255(exp)):
+        exp = 'NaN'
+    else:
+        exponente = 0
+        j = 7
+        for i in exp:
+            if (i == 1):
+                exponente = exponente + (1*(2**j))
+            j = j-1
+        exp = exponente - 127
+    return exp
+
+def resolucion_del_numero_desnorm(mantisa, exp):
+
+    """resolucion del numero que representa la mantiza elevada al exponente, Desnormalizada"""
+
+    j = -1
+    resultado = 0
+    for i in mantisa:
+        if (i == 1) and (j > -24):
+            resultado = resultado + (1*(2**(j+exp)))
+        j -=1
+    return resultado
+
+def resolucion_del_numero_norm(mantisa, exp):
+
+    """resolucion del numero que representa la mantiza elevada al exponente, Normalizada"""
+    
+    mantisa.insert(0, 1)
+    j = 0
+    resultado = 0
+    for i in mantisa:
+        if (i == 1) and (j > -24):
+            resultado = resultado + (1*(2**(j+exp)))
+        j -=1
+    return resultado
+
+def resolucion(lista):
+
+    """resolucion del problema completo"""
+
+    #Exponente
+    exp = lista[1:9]
+    exponente = calculo_exponente(exp)
+
+    #Mantisa
+    mantisa = lista[9:32]
+    if (exponente == -126):
+        if es_cero(mantisa):
+            resultado = 0
+            return resultado
+        else:
+            resultado = resolucion_del_numero_desnorm(mantisa, exponente)
+            return resultado
+    elif (exponente == 'NaN'):
+        if es_cero(mantisa):
+            resultado = ' infinito '
+            return resultado
+        else:
+            resultado = 'Not a Number'
+            return resultado
+    else:
+        resultado = resolucion_del_numero_norm(mantisa, exponente)
+        return resultado
+
+def solucion():
+
+    """Esta es la funcionalidad del boton igual '=' """
+
+    lista_x = pantalla_calculadora.get()                #lista_x es una cadena de caracteres (str),
+    #lista = list(lista_x)                              #con list(lista_x) consigues una lista, pero de CARACTERES resultado de descomponer dicha cadena, pero la funcion resolucion(): ESPERA UNA LISTA DE ENTEROS.
+    lista = [int(c) for c in lista_x]                   #Entonces, se aplica este tipo de asignacion, en la que puedo crear una lista a partir de una cadena.
+
+    sig = signo(lista[0])
+    resultado = resolucion(lista)
+
+    if resultado != 'Not a Number.':
+            pantalla_calculadora.delete(0, END)
+            pantalla_calculadora.insert(0, sig)
+            pantalla_calculadora.insert(1, resultado)
+    else:
+        pantalla_calculadora.delete(0, END)
+        pantalla_calculadora.insert(0, sig)
+        pantalla_calculadora.insert(0, resultado)
+
+
+def click_boton(valor):
+
+    """Click en el boton"""
+
+    global i
+    pantalla_calculadora.insert(i, valor)
+    i += 1
+
+def borrar_anterior():
+    
+    """Funcionalidad para borrar el ultimo numero agregado"""
+    
+    global i
+    pantalla_calculadora.delete((len(pantalla_calculadora.get())-1), END)
+    i -= 1
+
+def borrar_pantalla():
+
+    """Funcionalidad para borrar toda la pantalla"""
+
+    global i
+    pantalla_calculadora.delete(0, END)
+    i = 0
+
+
+#---------------------------------------------------------------------------------------------------
+#------------------------SECTOR DE PANTALLAS Y BOTONES---------------------------------------------
+#--------------------------------------------------------------------------------------------------
+
+ventana = Tk()
+ventana.title("Calculadora IEEE 754")
+ventana.geometry("680x120")
+
+i = 0
+
+
+#--------------------Pantalla de la calculadora------------------------------------------------------
+
+pantalla_calculadora = Entry(ventana, font=("Calibri 24"), width = 41)
+pantalla_calculadora.grid(row = 0, column = 0, columnspan = 5, padx= 10, pady = 4)
+
+
+#----------------------Forma y Funcionalidad de botones de la calculadora---------------------------
+
+boton0 = Button(ventana, text = "0", width = 20, height = 2, command = lambda: click_boton(0))
+boton1 = Button(ventana, text = "1", width = 20, height = 2, command = lambda: click_boton(1))
+
+boton_borrar_anterior = Button(ventana, text = "<--", width = 10, height = 2, command = lambda: borrar_anterior())
+boton_borrar_pantalla = Button(ventana, text = "C", width = 10, height = 2, command = lambda: borrar_pantalla())
+
+boton_igual = Button(ventana, text = "=", width = 20, height = 2, command = lambda: solucion())
+
+
+#-----------------Agregar botones en pantalla---------------------------------------------------------
+boton0.grid(row = 1, column = 0, padx = 1, pady = 5)
+boton1.grid(row = 1, column = 1, padx = 1, pady = 5)
+
+boton_borrar_anterior.grid(row = 1, column = 2, padx = 1, pady = 5)
+boton_borrar_pantalla.grid(row = 1, column = 3, padx = 1, pady = 5)
+
+boton_igual.grid(row = 1, column = 4, padx = 1, pady = 5)
+
+
+#Con mainloop generamos un bucle que permite ver la ventana y va a albergar todo el contenido
+ventana.mainloop()
